@@ -2,23 +2,23 @@
 
   luxe:{
     window: {
-      width:960,
-      height:640,
-      title:'luxe empty project',
+      width:800,
+      height:450,
+      title:'Opal Quest',
       fullscreen:false,
-      resizable:true,
+      resizable:false,
       borderless:false
     }
   },
 
   project : {
-    name : 'empty',
+    name : 'Opal Quest',
     version : '1.0.0',
-    author : 'luxeengine',
+    author : 'ashes999',
 
     app : {
-      name : 'luxe_empty',
-      package : 'com.luxeengine.empty'
+      name : 'opal_quest',
+      package : 'com.deengames.opalquest'
     },
 
     build : {

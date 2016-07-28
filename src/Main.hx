@@ -7,16 +7,21 @@ import luxe.Vector;
 
 class Main extends luxe.Game {
 
-    var ship:Sprite;
+    private static inline var LEVEL_WIDTH = 800;
+    private static inline var LEVEL_HEIGHT = 450;
     private static inline var SHIP_VELOCITY:Int = 10;
+    private static var WHITE = new Color().rgb(0xffffff);
+
+    private var ship:Sprite;
+    private var walls:Array<Sprite>;
 
     override function config(config:GameConfig) {
 
-        config.window.title = 'luxe game';
-        config.window.width = 800;
-        config.window.height = 450;
+        config.window.title = 'Opal Quest';
+        config.window.width = LEVEL_WIDTH;
+        config.window.height = LEVEL_HEIGHT;
         config.window.fullscreen = false;
-
+        
         return config;
 
     } //config
@@ -29,6 +34,36 @@ class Main extends luxe.Game {
             color: new Color().rgb(0xff0000),
             size: new Vector(32, 32)
         });
+        
+        walls = new Array<Sprite>();
+        
+        walls.push(new Sprite({
+           name: "top wall",
+           pos: new Vector(LEVEL_WIDTH / 2, 0),
+           color: WHITE,
+           size: new Vector(LEVEL_WIDTH, 1) 
+        }));
+        
+        walls.push(new Sprite({
+           name: "bottom wall",
+           pos: new Vector(LEVEL_WIDTH / 2, LEVEL_HEIGHT - 1),
+           color: WHITE,
+           size: new Vector(LEVEL_WIDTH, 1) 
+        }));
+        
+        walls.push(new Sprite({
+           name: "left wall",
+           pos: new Vector(1, LEVEL_HEIGHT / 2),
+           color: WHITE,
+           size: new Vector(1, LEVEL_HEIGHT) 
+        }));
+        
+        walls.push(new Sprite({
+           name: "right wall",
+           pos: new Vector(LEVEL_WIDTH, LEVEL_HEIGHT / 2),
+           color: WHITE,
+           size: new Vector(1, LEVEL_HEIGHT) 
+        }));
 
     } //ready
 

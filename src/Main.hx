@@ -18,6 +18,7 @@ class Main extends luxe.Game
 
     private var ship:Ship;
     private var walls:Array<ExtendedSprite>;
+    private var bullets = new Array<ExtendedSprite>();
 
     override function config(config:GameConfig) {
 
@@ -103,7 +104,17 @@ class Main extends luxe.Game
 
     override function onmouseup(event:luxe.MouseEvent)
     {
-        trace(event);
+        // The farther you click from the ship, the faster the bullet
+        var vX = event.pos.x - ship.pos.x;
+        var vY = event.pos.y - ship.pos.y;
+        
+        var bullet = new ExtendedSprite({
+            pos: new Vector(ship.pos.x, ship.pos.y),
+            color: new Color().rgb(0xffff00),
+            size: new Vector(4, 4)
+        });
+        
+        bullet.velocity = new Vector(vX, vY);
     }
 
 } //Main

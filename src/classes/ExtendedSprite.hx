@@ -7,7 +7,7 @@ import luxe.Vector;
 
 class ExtendedSprite extends luxe.Sprite
 {
-    private var velocity:Vector;
+    public var velocity:Vector;
     
     public function new(config)
     {

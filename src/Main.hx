@@ -2,18 +2,22 @@
 import luxe.Color;
 import luxe.GameConfig;
 import luxe.Input;
+import luxe.collision.shapes.Polygon;
 import luxe.Sprite;
 import luxe.Vector;
 
-class Main extends luxe.Game {
+import classes.Ship;
+
+class Main extends luxe.Game
+{
 
     private static inline var LEVEL_WIDTH = 800;
     private static inline var LEVEL_HEIGHT = 450;
-    private static inline var SHIP_VELOCITY:Int = 10;
     private static var WHITE = new Color().rgb(0xffffff);
 
-    private var ship:Sprite;
+    private var ship:Ship;
     private var walls:Array<Sprite>;
+    private var wallPolygons:Array<Polygon> = new Array<Polygon>();
 
     override function config(config:GameConfig) {
 
@@ -28,11 +32,11 @@ class Main extends luxe.Game {
 
     override function ready() {
 
-        ship = new Sprite({ 
+        ship = new Ship({ 
             name: 'ship',
             pos: Luxe.screen.mid,
             color: new Color().rgb(0xff0000),
-            size: new Vector(32, 32)
+            size: new Vector(32, 32),
         });
         
         walls = new Array<Sprite>();
@@ -64,6 +68,11 @@ class Main extends luxe.Game {
            color: WHITE,
            size: new Vector(1, LEVEL_HEIGHT) 
         }));
+        
+        for (wall in walls) {
+            var r = Polygon.rectangle(wall.pos.x, wall.pos.y, wall.size.x, wall.size.y);
+            wallPolygons.push(r);
+        }
 
     } //ready
 
@@ -72,26 +81,25 @@ class Main extends luxe.Game {
         if(e.keycode == Key.escape) {
             Luxe.shutdown();
         }
+        
+        ship.onKeyUp(e);
 
     } //onkeyup
 
     override function update(dt:Float) {
-
+        
+        ship.update(dt);        
+        var shipPolygon = ship.getPolygon();
+        for (wall in wallPolygons) {
+            var result = shipPolygon.testPolygon(wall);
+            if (result != null && result.overlap != 0) {
+                trace('COLLISION WITH ${wall}: ${result}!');
+            }
+        }
     } //update
     
     override function onkeydown(event:KeyEvent) {
-        if (event.scancode == luxe.Scan.up)
-        {
-            ship.pos.y -= SHIP_VELOCITY;
-        } else if (event.scancode == luxe.Scan.down) {
-            ship.pos.y += SHIP_VELOCITY;
-        }
-        
-        if (event.scancode == luxe.Scan.left) {
-            ship.pos.x -= SHIP_VELOCITY;
-        } else if (event.scancode == luxe.Scan.right) {
-            ship.pos.x += SHIP_VELOCITY;
-        }
+        ship.onKeyDown(event);
     }
 
 } //Main

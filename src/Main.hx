@@ -86,19 +86,24 @@ class Main extends luxe.Game
 
     } //onkeyup
 
-    override function update(dt:Float) {
+    override function update(dt:Float)
+    {
         
         ship.update(dt);        
         var shipPolygon = ship.getPolygon();
         for (wall in wallPolygons) {
             var result = shipPolygon.testPolygon(wall);
-            if (result != null && result.overlap != 0) {
-                trace('COLLISION WITH ${wall}: ${result}!');
+            if (result != null)
+            {
+                // Move player away from the wall
+                ship.pos.x += result.separation.x;
+                ship.pos.y += result.separation.y;
             }
         }
     } //update
     
-    override function onkeydown(event:KeyEvent) {
+    override function onkeydown(event:KeyEvent)
+    {
         ship.onKeyDown(event);
     }
 

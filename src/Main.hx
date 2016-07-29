@@ -6,6 +6,7 @@ import luxe.collision.shapes.Polygon;
 import luxe.Sprite;
 import luxe.Vector;
 
+import classes.ExtendedSprite;
 import classes.Ship;
 
 class Main extends luxe.Game
@@ -16,8 +17,7 @@ class Main extends luxe.Game
     private static var WHITE = new Color().rgb(0xffffff);
 
     private var ship:Ship;
-    private var walls:Array<Sprite>;
-    private var wallPolygons:Array<Polygon> = new Array<Polygon>();
+    private var walls:Array<ExtendedSprite>;
 
     override function config(config:GameConfig) {
 
@@ -39,41 +39,35 @@ class Main extends luxe.Game
             size: new Vector(32, 32),
         });
         
-        walls = new Array<Sprite>();
+        walls = new Array<ExtendedSprite>();
         
-        walls.push(new Sprite({
+        walls.push(new ExtendedSprite({
            name: "top wall",
            pos: new Vector(LEVEL_WIDTH / 2, 0),
            color: WHITE,
            size: new Vector(LEVEL_WIDTH, 1) 
         }));
         
-        walls.push(new Sprite({
+        walls.push(new ExtendedSprite({
            name: "bottom wall",
            pos: new Vector(LEVEL_WIDTH / 2, LEVEL_HEIGHT - 1),
            color: WHITE,
            size: new Vector(LEVEL_WIDTH, 1) 
         }));
         
-        walls.push(new Sprite({
+        walls.push(new ExtendedSprite({
            name: "left wall",
            pos: new Vector(1, LEVEL_HEIGHT / 2),
            color: WHITE,
            size: new Vector(1, LEVEL_HEIGHT) 
         }));
         
-        walls.push(new Sprite({
+        walls.push(new ExtendedSprite({
            name: "right wall",
            pos: new Vector(LEVEL_WIDTH, LEVEL_HEIGHT / 2),
            color: WHITE,
            size: new Vector(1, LEVEL_HEIGHT) 
         }));
-        
-        for (wall in walls) {
-            var r = Polygon.rectangle(wall.pos.x, wall.pos.y, wall.size.x, wall.size.y);
-            wallPolygons.push(r);
-        }
-
     } //ready
 
     override function onkeyup( e:KeyEvent ) {
@@ -87,12 +81,12 @@ class Main extends luxe.Game
     } //onkeyup
 
     override function update(dt:Float)
-    {
-        
+    {        
         ship.update(dt);        
         var shipPolygon = ship.getPolygon();
-        for (wall in wallPolygons) {
-            var result = shipPolygon.testPolygon(wall);
+        for (wall in walls) {
+            var wallPolygon = wall.getPolygon();
+            var result = shipPolygon.testPolygon(wallPolygon);
             if (result != null)
             {
                 // Move player away from the wall
@@ -105,6 +99,11 @@ class Main extends luxe.Game
     override function onkeydown(event:KeyEvent)
     {
         ship.onKeyDown(event);
+    }
+
+    override function onmouseup(event:luxe.MouseEvent)
+    {
+        trace(event);
     }
 
 } //Main

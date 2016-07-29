@@ -5,23 +5,12 @@ import luxe.Input;
 import luxe.Sprite;
 import luxe.Vector;
 
-class Ship extends luxe.Sprite
+import classes.ExtendedSprite;
+
+class Ship extends ExtendedSprite
 {
     private static inline var SHIP_VELOCITY:Int = 100;
-    
-    private var velocity:Vector;
-    
-    public function new(config)
-    {
-        super(config);
-        velocity = new Vector(0, 0);
-    }
-    
-    public function getPolygon():Polygon
-    {
-        return Polygon.rectangle(this.pos.x, this.pos.y, this.size.x, this.size.y);
-    }
-    
+        
     public function onKeyDown(event:KeyEvent):Void
     {
         if (event.scancode == luxe.Scan.up)
@@ -54,14 +43,5 @@ class Ship extends luxe.Sprite
         {
             this.velocity.x = 0;
         }
-    }
-    
-    override public function update(dt:Float):Void
-    {
-        super.update(dt);
-        var moveX = this.velocity.x * dt;
-        var moveY = this.velocity.y * dt;
-        this.pos.x += moveX;
-        this.pos.y += moveY;
     }
 }
